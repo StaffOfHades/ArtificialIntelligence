@@ -1,4 +1,4 @@
-package base;
+package action;
 
 /**
  * Created by mauriciog on 8/15/15.

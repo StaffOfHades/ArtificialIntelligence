@@ -1,4 +1,4 @@
-package base;
+package actor;
 
 /**
  * Created by mauriciog on 8/19/15.

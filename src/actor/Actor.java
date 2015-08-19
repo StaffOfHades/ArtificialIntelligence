@@ -1,4 +1,6 @@
-package base;
+package actor;
+
+import type.PersonalityType;
 
 import java.util.Random;
 import java.util.UUID;
