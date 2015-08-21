@@ -5,5 +5,5 @@ package manager;
  */
 public interface ManagerListener {
 
-    void onManagerCommand(String command);
+    void onWorldUpdated();
 }

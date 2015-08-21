@@ -18,8 +18,8 @@ public class Effector implements EfectorListener {
     }
 
     @Override
-    public void onWorldAffected() {
-        System.out.println("World Affected");
-        mListener.onActorDecision("Actor Responding");
+    public void onActorDecision() {
+        System.out.println("Actor Decision");
+        mListener.onWorldAffected();
     }
 }

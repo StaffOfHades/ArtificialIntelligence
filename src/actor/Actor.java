@@ -44,8 +44,8 @@ public class Actor implements PerceptorListener {
     }
 
     @Override
-    public void onWorldUpdated() {
-        System.out.println("World Updated");
-        mListener.onWorldAffected();
+    public void onPerceptionChanged() {
+        System.out.println("Perception Changed");
+        mListener.onActorDecision();
     }
 }

@@ -5,5 +5,5 @@ package actor;
  */
 public interface PerceptorListener {
 
-    public void onWorldUpdated();
+    void onPerceptionChanged();
 }

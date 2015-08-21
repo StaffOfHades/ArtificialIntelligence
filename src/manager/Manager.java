@@ -14,14 +14,14 @@ public class Manager implements ActorListener {
         mListeners = new ArrayList<ManagerListener>();
         for (int i = 0; i < 5; i++) {
             mListeners.add(ActorFactory.createActor(this));
-            mListeners.get(i).onManagerCommand("Respond");
+            mListeners.get(i).onWorldUpdated();
             System.out.println();
         }
 
     }
 
     @Override
-    public void onActorDecision(String decision) {
-        System.out.println("Decision: " + decision);
+    public void onWorldAffected() {
+        System.out.println("World Affected");
     }
 }
