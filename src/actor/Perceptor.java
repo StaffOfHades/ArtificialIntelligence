@@ -18,8 +18,8 @@ public class Perceptor implements ManagerListener {
     }
 
     @Override
-    public void onManagerCommand(String command) {
-        System.out.println("Manager Commands");
-        mListener.onWorldUpdated();
+    public void onWorldUpdated() {
+        System.out.println("World Updated");
+        mListener.onPerceptionChanged();
     }
 }

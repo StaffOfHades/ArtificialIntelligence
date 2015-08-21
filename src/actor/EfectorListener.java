@@ -5,5 +5,5 @@ package actor;
  */
 public interface EfectorListener {
 
-    void onWorldAffected();
+    void onActorDecision();
 }

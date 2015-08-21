@@ -5,6 +5,6 @@ package manager;
  */
 public interface ActorListener {
 
-    void onActorDecision(String decision);
+    void onWorldAffected();
 
 }
