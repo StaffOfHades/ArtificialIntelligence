@@ -1,4 +1,6 @@
-package base;
+package actor;
+
+import type.TraitType;
 
 import java.util.Random;
 
@@ -18,9 +20,9 @@ public class Trait {
         mHolder = holder;
         mValue = value;
 
-        System.out.println( (hasTrait ? "Has " : "Doesn't Have ") + "Trait Type " + type);
+        /*System.out.println( (hasTrait ? "Has " : "Doesn't Have ") + "Trait Type " + type);
         System.out.println("Value = " + value );
-        System.out.println(". . . . . . . . . . . . . . .");
+        System.out.println(". . . . . . . . . . . . . . .");*/
     }
 
     public int getValue() {
@@ -62,7 +64,7 @@ public class Trait {
         final int trueValue = mValue > 0 ? mValue : -mValue;
         final int adaptability = 100 - adaptable.getValue();
         if ( adaptable.hasTrait && adaptability <= trueValue) {
-            hasTrait = mValue >= 0 ? true : false;
+            hasTrait = mValue >= 0;
         }
         return true;
     }

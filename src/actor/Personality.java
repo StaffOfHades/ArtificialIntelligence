@@ -1,6 +1,8 @@
-package base;
+package actor;
 
-import java.io.Console;
+import type.PersonalityType;
+import type.TraitType;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -36,10 +38,9 @@ public class Personality {
         boolean hasTrait;
         Trait trait;
         for ( TraitType type : TraitType.values() ) {
-            hasTrait = type == TraitType.Adaptable ? isAdaptable : random.nextInt(2) == 0 ? false : true;
+            hasTrait = type == TraitType.Adaptable ? isAdaptable : random.nextInt(2) == 0;
             mTraitMap.put(type, Trait.getInstance(type, hasTrait, mHolder) );
         }
-        System.out.println();
     }
 
     public boolean changeTrait(TraitType type, boolean eventSuccessful) {
@@ -62,10 +63,6 @@ public class Personality {
                 adaptable = false;
                 break;
         }
-        System.out.println("Personality Type = " + type);
-        System.out.println("Velocity Change = " + velocity);
-        System.out.println("Adaptable = " + (adaptable ? "true" : "false" ) );
-        System.out.println("----------------------------");
         return new Personality(type, velocity, adaptable);
     }
 
