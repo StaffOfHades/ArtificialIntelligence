@@ -1,5 +1,6 @@
 package actor;
 
+import base.PhysicalState;
 import type.PersonalityType;
 
 import java.util.Random;
@@ -8,26 +9,16 @@ import java.util.UUID;
 /**
  * Created by mauriciog on 8/19/15.
  */
-public class Actor {
+public class Actor implements PerceptorListener {
 
     private final Personality mPersonality;
     private final UUID mId;
     private final Stats mStats;
     private final Attributes mAttributes;
+    private final PhysicalState mPhysicalState;
+    private final EfectorListener mListener;
 
-    private Actor(PersonalityType type) {
-        mPersonality = Personality.getInstance(type);
-        mId = UUID.randomUUID();
-        mStats = Stats.getInstance();
-        mAttributes = Attributes.getInstance();
-        initValues();
-    }
-
-    private void initValues() {
-
-    }
-
-    public static Actor getInstance() {
+    public static Actor getInstance(int xAxis, int yAxis, EfectorListener listener) {
         final Random random = new Random();
         final int probability = random.nextInt(10);
         final PersonalityType type;
@@ -40,6 +31,21 @@ public class Actor {
         } else {
             type = PersonalityType.Static;
         }
-        return new Actor(type);
+        return new Actor(type, xAxis, yAxis, listener);
+    }
+
+    private Actor(PersonalityType type, int xAxis, int yAxis, EfectorListener listener) {
+        mPersonality = Personality.getInstance(type);
+        mId = UUID.randomUUID();
+        mStats = Stats.getInstance();
+        mAttributes = Attributes.getInstance();
+        mPhysicalState = new PhysicalState(xAxis, yAxis);
+        mListener = listener;
+    }
+
+    @Override
+    public void onWorldUpdated() {
+        System.out.println("World Updated");
+        mListener.onWorldAffected();
     }
 }
