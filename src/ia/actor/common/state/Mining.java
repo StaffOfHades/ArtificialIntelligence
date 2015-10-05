@@ -10,18 +10,20 @@ import system.debugging.Log;
  */
 public class Mining extends State<Actor> {
 
+    private static final String TAG = "Mining";
+
     @Override
-    public void enter(Actor entity) {
-        Log.w(entity.toString(), "Actor starting to mine");
+    public void onEnter(Actor entity) {
+        Log.v(TAG, entity.toString() + " is starting to mine");
     }
 
     @Override
-    public void execute(Actor entity) {
-        Log.w(entity.toString(), "Actor mined 1 resource, now has " + entity.gold++ + " pieces");
+    public void onExecute(Actor entity) {
+        Log.v(TAG, entity.toString() + " mined 1 resource, now has " + entity.gold++ + " pieces");
     }
 
     @Override
-    public void exit(Actor entity) {
-        Log.w(entity.toString(), "Actor is no longer mining");
+    public void onExit(Actor entity) {
+        Log.v(TAG, entity.toString() + " is no longer mining");
     }
 }

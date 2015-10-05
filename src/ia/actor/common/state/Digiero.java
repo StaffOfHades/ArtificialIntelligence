@@ -11,18 +11,18 @@ import system.debugging.Log;
 public class Digiero extends State<Actor> {
 
     @Override
-    public void enter(Actor entity) {
-        Log.d("Digiero", "Actor va a empezar a digerir");
+    public void onEnter(Actor entity) {
+        Log.v("Digiero", "Actor va a empezar a digerir");
     }
 
     @Override
-    public void execute(Actor entity) {
-        Log.d("Digiero", "Actor digirio la comida");
+    public void onExecute(Actor entity) {
+        Log.v("Digiero", "Actor digirio la comida");
         entity.onRevertState();
     }
 
     @Override
-    public void exit(Actor entity) {
-        Log.d("Digiero", "Actor ya dirigio, y tiene hambre");
+    public void onExit(Actor entity) {
+        Log.v("Digiero", "Actor ya dirigio, y tiene hambre");
     }
 }

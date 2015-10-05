@@ -3,7 +3,7 @@ package system.view;
 
 import ia.actor.common.actor.ActorControl;
 import ia.actor.common.actor.ActorFactory;
-import ia.actor.unique.ActorManager;
+import ia.actor.unique.ActorEntityManager;
 import system.debugging.Log;
 
 /**
@@ -15,7 +15,7 @@ public class ConsoleView {
     private static final int GAME_TURNS = 20;
 
     public static void main(String[] args) {
-        ActorManager manager = ActorManager.getInstance( ActorFactory.getInstance(), ActorControl.getInstance() );
+        ActorEntityManager manager = ActorEntityManager.getInstance(ActorFactory.getInstance(), ActorControl.getInstance());
         manager.addEntity(1);
         for (int i = 0; i < GAME_TURNS; i++) {
             Log.v(TAG, "Staring game turn " + i);

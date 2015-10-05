@@ -10,22 +10,24 @@ import system.debugging.Log;
  */
 public class Comer extends State<Actor> {
 
+    private static final String TAG = "Comer";
+
     @Override
-    public void enter(Actor entity) {
+    public void onEnter(Actor entity) {
         entity.hunger = 4;
-        Log.f("Comer", "Actor tiene " + entity.hunger + " de hambre");
+        Log.v(TAG, entity.toString() + " tiene " + entity.hunger + " de hambre");
     }
 
     @Override
-    public void execute(Actor entity) {
+    public void onExecute(Actor entity) {
         entity.hunger--;
-        Log.f("Comer", "Actor comio, y bajo su hambre a  " + entity.hunger);
+        Log.v(TAG, entity.toString() + " comio, y bajo su hambre a  " + entity.hunger);
         if (entity.hunger == 0)
             entity.onChangeState( new Digiero() );
     }
 
     @Override
-    public void exit(Actor entity) {
-        Log.f("Comer", "Actor esta lleno, y tiene que digerir");
+    public void onExit(Actor entity) {
+        Log.v(TAG, entity.toString() + " esta lleno, y tiene que digerir");
     }
 }

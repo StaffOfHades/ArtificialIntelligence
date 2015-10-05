@@ -10,19 +10,21 @@ import system.debugging.Log;
  */
 public class Planning extends State<Actor> {
 
+    private static final String TAG = "Planning";
+
     @Override
-    public void enter(Actor entity) {
-        Log.i(entity.toString(), "Started to think");
+    public void onEnter(Actor entity) {
+        Log.v(TAG, entity.toString() + " started to think");
     }
 
     @Override
-    public void execute(Actor entity) {
-        Log.i(entity.toString(), "Came to a decision");
+    public void onExecute(Actor entity) {
+        Log.v(TAG, entity.toString() + " came to a decision");
         entity.onChangeState( new Comer() );
     }
 
     @Override
-    public void exit(Actor entity) {
-        Log.i(entity.toString(), "Finished planning");
+    public void onExit(Actor entity) {
+        Log.v(TAG, entity.toString() + " finished planning");
     }
 }

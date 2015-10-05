@@ -8,7 +8,7 @@ import ia.base.GameEntity;
  */
 public abstract class State<E extends GameEntity> {
 
-    public abstract void enter(final E entity);
-    public abstract void execute(final E entity);
-    public abstract void exit(final E entity);
+    public abstract void onEnter(final E entity);
+    public abstract void onExecute(final E entity);
+    public abstract void onExit(final E entity);
 }

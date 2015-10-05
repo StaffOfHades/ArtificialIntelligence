@@ -11,14 +11,14 @@ import java.util.List;
 /**
  * Created by mauriciog on 8/21/15.
  */
-public abstract class Manager<E extends GameEntity> implements EntityListener<E> {
+public abstract class EntityManager<E extends GameEntity> implements EntityListener<E> {
 
-    private static final String TAG = "Manager";
+    private static final String TAG = "Entity Manager";
     private final List< ManagerListener<E> > mListeners;
     private final EntityFactory<E> mFactory;
     private final EntityControl<E> mControl;
 
-    public Manager(EntityFactory<E> factory, EntityControl<E> control) {
+    public EntityManager(EntityFactory<E> factory, EntityControl<E> control) {
         mFactory = factory;
         mControl = control;
         mListeners = new ArrayList< ManagerListener<E> >();
@@ -37,7 +37,7 @@ public abstract class Manager<E extends GameEntity> implements EntityListener<E>
 
     public void addEntity(int num) {
         for (int i = 0; i < num; i++) {
-            Log.v(TAG, "Adding an entity");
+            Log.i(TAG, "Adding an entity");
             mListeners.add( mFactory.createEntity(this) );
         }
     }

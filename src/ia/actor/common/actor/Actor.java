@@ -9,7 +9,6 @@ import ia.characteristics.Vector2D;
 import ia.state.State;
 import ia.state.StateManager;
 import ia.world_interaction.EffectorListener;
-import ia.world_interaction.PercipientListener;
 
 import java.util.Random;
 
@@ -17,7 +16,7 @@ import java.util.Random;
  * Default Template. Information about ${PROJECT_NAME} should go here
  * Created by mauriciog on 8/19/15.
  */
-public class Actor extends GameEntity implements PercipientListener<Actor> {
+public class Actor extends GameEntity implements ActorListener<Actor> {
 
     private final StateManager<Actor> mStateManager;
 

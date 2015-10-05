@@ -29,29 +29,31 @@ public class StateManager<E extends GameEntity> {
     }
 
     public void update() {
-        Log.e(TAG, "Updating " + mOwner.toString());
+        Log.i(TAG, "Updating " + mOwner.toString());
         if (mGlobalState != null)
-            mGlobalState.execute(mOwner);
+            mGlobalState.onExecute(mOwner);
         if (mCurrentState != null)
-            mCurrentState.execute(mOwner);
+            mCurrentState.onExecute(mOwner);
     }
 
     public void changeState(State<E> newState) {
         mPreviousList.add(mCurrentState);
-        Log.e(TAG, "Changing to state " + (mPreviousList.size() - 1) + " of " + mOwner.toString());
+        Log.i(TAG,
+                "Changing to state " + ( mPreviousList.size() - 1 ) + " of " + mOwner.toString());
         if (mCurrentState != null)
-            mCurrentState.exit(mOwner);
+            mCurrentState.onExit(mOwner);
         mCurrentState = newState;
-        mCurrentState.enter(mOwner);
+        mCurrentState.onEnter(mOwner);
     }
 
     public void revertToPreviousState() {
         if (mPreviousList.size() > 0) {
-            Log.e(TAG, "Reverting to state " + (mPreviousList.size() - 1)  + " of " + mOwner.toString());
-            mCurrentState.exit(mOwner);
-            mCurrentState = mPreviousList.get( mPreviousList.size() - 1 );;
+            Log.i(TAG,
+                    "Reverting to state " + (mPreviousList.size() - 2)  + " of " + mOwner.toString());
+            mCurrentState.onExit(mOwner);
+            mCurrentState = mPreviousList.get( mPreviousList.size() - 1 );
             mPreviousList.remove(mPreviousList.size() - 1);
-            mCurrentState.enter(mOwner);
+            mCurrentState.onEnter(mOwner);
         }
     }
 
