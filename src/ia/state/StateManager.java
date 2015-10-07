@@ -14,7 +14,8 @@ public class StateManager<E extends GameEntity> {
 
     private static final String TAG = "State Manager";
     private final E mOwner;
-    private State<E> mCurrentState, mGlobalState;
+    private State<E> mCurrentState;
+    private State<E> mGlobalState;
     private final List< State<E> > mPreviousList;
 
     public StateManager(E owner) {
@@ -26,6 +27,9 @@ public class StateManager<E extends GameEntity> {
 
     public void setGlobalState(State<E> globalState) {
         mGlobalState = globalState;
+        Log.i(TAG,
+                "Setting global state \"" + globalState.toString() + "\" for " + mOwner.toString());
+        mGlobalState.onEnter(mOwner);
     }
 
     public void update() {
@@ -39,7 +43,7 @@ public class StateManager<E extends GameEntity> {
     public void changeState(State<E> newState) {
         mPreviousList.add(mCurrentState);
         Log.i(TAG,
-                "Changing to state " + ( mPreviousList.size() - 1 ) + " of " + mOwner.toString());
+                "Changing to state " + ( mPreviousList.size() - 1 ) + ", \"" + newState.toString() + "\" of " + mOwner.toString());
         if (mCurrentState != null)
             mCurrentState.onExit(mOwner);
         mCurrentState = newState;
@@ -47,12 +51,20 @@ public class StateManager<E extends GameEntity> {
     }
 
     public void revertToPreviousState() {
-        if (mPreviousList.size() > 0) {
+        revertToPreviousStateBy(1);
+    }
+
+    public void revertToPreviousStateBy(int times) {
+        if (mPreviousList.size() - times >= 0) {
+            State<E> previousState = mPreviousList.get( mPreviousList.size() - times );
+            int previousNum = (mPreviousList.size() - times) - (mCurrentState != null ? 1 : 0);
             Log.i(TAG,
-                    "Reverting to state " + (mPreviousList.size() - 2)  + " of " + mOwner.toString());
+                    "Reverting to state " +  previousNum + ", \"" + previousState.toString() + "\" of " + mOwner.toString());
             mCurrentState.onExit(mOwner);
-            mCurrentState = mPreviousList.get( mPreviousList.size() - 1 );
-            mPreviousList.remove(mPreviousList.size() - 1);
+            mCurrentState = previousState;
+            for (int i = 1; i <= times; i++) {
+                mPreviousList.remove(mPreviousList.size() - i);
+            }
             mCurrentState.onEnter(mOwner);
         }
     }

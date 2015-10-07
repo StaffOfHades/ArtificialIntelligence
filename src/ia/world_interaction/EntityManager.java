@@ -3,6 +3,7 @@ package ia.world_interaction;
 import ia.base.EntityControl;
 import ia.base.EntityFactory;
 import ia.base.GameEntity;
+import ia.characteristics.Vector2D;
 import system.debugging.Log;
 
 import java.util.ArrayList;
@@ -17,16 +18,22 @@ public abstract class EntityManager<E extends GameEntity> implements EntityListe
     private final List< ManagerListener<E> > mListeners;
     private final EntityFactory<E> mFactory;
     private final EntityControl<E> mControl;
+    private static WorldStatus sWorldStatus;
 
     public EntityManager(EntityFactory<E> factory, EntityControl<E> control) {
         mFactory = factory;
         mControl = control;
         mListeners = new ArrayList< ManagerListener<E> >();
+        sWorldStatus = WorldStatus.getInstance();
     }
 
     public void runGameTurn() {
+        for (int i = 0; i < 6; i++) {
+            sWorldStatus.getVectorList().clear();
+            sWorldStatus.getVectorList().add( new Vector2D(true) );
+        }
         for (ManagerListener<E> listener : mListeners) {
-            listener.onWorldUpdated();
+            listener.onWorldUpdated(sWorldStatus.getSnapshot());
         }
         mControl.runCycle();
     }
@@ -37,7 +44,7 @@ public abstract class EntityManager<E extends GameEntity> implements EntityListe
 
     public void addEntity(int num) {
         for (int i = 0; i < num; i++) {
-            Log.i(TAG, "Adding an entity");
+            Log.i(TAG, "Creating an entity");
             mListeners.add( mFactory.createEntity(this) );
         }
     }

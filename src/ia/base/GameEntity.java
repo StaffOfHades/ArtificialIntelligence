@@ -1,5 +1,9 @@
 package ia.base;
 
+import ia.characteristics.Stats;
+import ia.characteristics.Vector2D;
+import system.debugging.Log;
+
 import java.util.UUID;
 
 /**
@@ -8,19 +12,45 @@ import java.util.UUID;
  */
 public abstract class GameEntity {
 
-    public UUID id;
-    public String name;
+    private static final String TAG = "Game Entity";
     protected static int num = 0;
 
-    public GameEntity(String name) {
+    protected final Stats mStats;
+    protected final Vector2D mVector2D;
+
+    public UUID id;
+    public String name;
+
+    public GameEntity(String name, Vector2D vector2D) {
+        mVector2D = vector2D;
         this.name = name;
         id = UUID.randomUUID();
+
+        mStats = Stats.newInstance();
+
+        Log.d(TAG, "Creating " + toString());
+    }
+
+
+    public GameEntity(String name) {
+        mVector2D = new Vector2D(true);
+        this.name = name;
+        id = UUID.randomUUID();
+
+        mStats = Stats.newInstance();
+
+        Log.d(TAG, "Creating " + toString());
     }
 
     public GameEntity() {
         this.name =  "Entity " + num;
         id = UUID.randomUUID();
         num++;
+
+        mVector2D = new Vector2D(true);
+        mStats = Stats.newInstance();
+
+        Log.d(TAG, "Creating " + toString() );
     }
 
     @Override

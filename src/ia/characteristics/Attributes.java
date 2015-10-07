@@ -5,15 +5,11 @@ package ia.characteristics;
  */
 public class Attributes {
 
-    private Attributes() {
-        initValues();
-    }
-
-    private void initValues() {
-
-    }
-
     public static Attributes newInstance() {
         return new Attributes();
+    }
+
+    private Attributes() {
+
     }
 }

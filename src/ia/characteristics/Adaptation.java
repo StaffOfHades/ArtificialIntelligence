@@ -5,6 +5,10 @@ package ia.characteristics;
  */
 public class Adaptation {
 
+    public static Adaptation newInstance() {
+        return new Adaptation();
+    }
+
     private Adaptation() {
 
     }

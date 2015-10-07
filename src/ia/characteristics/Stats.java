@@ -5,16 +5,14 @@ package ia.characteristics;
  */
 public class Stats {
 
-    private Stats() {
-        initValues();
-    }
-
-    private void initValues() {
-
-    }
+    public int hunger;
 
     public static Stats newInstance() {
         return new Stats();
+    }
+
+    private Stats() {
+        hunger = 0;
     }
 
 }
