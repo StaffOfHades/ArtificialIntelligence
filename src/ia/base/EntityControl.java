@@ -1,5 +1,7 @@
 package ia.base;
 
+import system.debugging.Log;
+
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class EntityControl<E extends GameEntity> {
 
+    private static final String TAG = "Entity Control";
     private final Map<UUID, E> mEntityMap;
 
     public EntityControl() {
@@ -17,6 +20,7 @@ public class EntityControl<E extends GameEntity> {
     }
 
     protected void registerEntity(E entity) {
+        Log.v(TAG, "Adding " + entity.toString() + " with id " + entity.id.toString(), Log.ANSI_YELLOW);
         mEntityMap.put(entity.id, entity);
     }
 

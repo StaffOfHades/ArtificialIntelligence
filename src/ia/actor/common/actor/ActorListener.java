@@ -1,5 +1,6 @@
 package ia.actor.common.actor;
 
+import ia.characteristics.Attributes;
 import ia.state.State;
 import ia.world_interaction.PercipientListener;
 
@@ -7,9 +8,15 @@ import ia.world_interaction.PercipientListener;
  * Default Template. Information about thus class should go here
  * Created by mauriciog on 10/6/15 for Artificial Intelligence
  */
-public interface ActorListener<E extends Actor> extends PercipientListener<Actor> {
+public interface ActorListener extends PercipientListener<Actor> {
 
-    void onChangeState(State<E> state);
+    Attributes getAttributes();
+    Personality getPersonality();
+    Inventory getInventory();
+
+
     void onRevertState();
-    boolean onCompareState(State<E> state);
+    void onRevertStateBy(int times);
+    void onChangeState(State<Actor> state);
+    boolean onCompareState(State<Actor> state);
 }

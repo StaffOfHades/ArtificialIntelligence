@@ -1,7 +1,6 @@
 package ia.actor.common.actor;
 
 import ia.base.EntityFactory;
-import ia.characteristics.Vector2D;
 import ia.world_interaction.EffectorListener;
 import ia.world_interaction.PercipientListener;
 
@@ -22,7 +21,7 @@ public class ActorFactory extends EntityFactory<Actor> {
     private ActorFactory() { }
 
     @Override
-    protected PercipientListener<Actor> createPercipientListener(EffectorListener<Actor> effectorListener, Vector2D v2) {
-        return Actor.newInstance(v2, effectorListener);
+    protected PercipientListener<Actor> createPercipientListener(EffectorListener<Actor> effectorListener) {
+        return Actor.newInstance(effectorListener);
     }
 }

@@ -1,5 +1,9 @@
 package ia.characteristics;
 
+import system.debugging.Log;
+
+import java.util.Random;
+
 /**
  * Default Template. Information about thus class should go here
  * Created by mauriciog on 10/1/15 for Artificial Intelligence
@@ -12,17 +16,35 @@ public class Vector2D {
             MIN_DOUBLE = 0,
             EPSILON = Double.longBitsToDouble(971l << 52) ;
 
+    private static final String TAG = "Vector 2D";
+
 
     public double x, y;
 
-    public Vector2D() {
-        x = 0;
-        y = 0;
+    public Vector2D(boolean random) {
+        if (random) {
+            final Random r = new Random();
+            x = r.nextInt(11) * (r.nextInt(2) % 2 == 0 ? 1 : -1);
+            y = r.nextInt(11) * (r.nextInt(2) % 2 == 0 ? 1 : -1);
+        } else {
+            x = 0;
+            y = 0;
+        }
+
+        Log.d(TAG, "Created vector " + toString(), Log.ANSI_BLACK);
     }
+
     public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
+        Log.d(TAG, "Created vector " + toString(), Log.ANSI_BLACK);
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
 
     public void setZero() {
         x = 0;

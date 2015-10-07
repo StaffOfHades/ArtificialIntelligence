@@ -8,7 +8,19 @@ import ia.base.GameEntity;
  */
 public abstract class State<E extends GameEntity> {
 
-    public abstract void onEnter(final E entity);
-    public abstract void onExecute(final E entity);
-    public abstract void onExit(final E entity);
+    private final String mName;
+
+    public State(String name) {
+        mName = name;
+    }
+
+    public abstract void onEnter(E entity);
+    public abstract void onExecute(E entity);
+    public abstract void onExit(E entity);
+
+    @Override
+    public String toString() {
+        return mName;
+    }
+
 }
