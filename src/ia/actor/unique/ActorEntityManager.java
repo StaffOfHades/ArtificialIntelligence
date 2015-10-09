@@ -13,7 +13,7 @@ public class ActorEntityManager extends EntityManager<Actor> {
 
     private static ActorEntityManager sActorManager;
 
-    public static ActorEntityManager getInstance(ActorFactory factory, ActorControl control) {
+    public final static ActorEntityManager getInstance(ActorFactory factory, ActorControl control) {
         if (sActorManager == null)
             sActorManager = new ActorEntityManager(factory, control);
         return sActorManager;
@@ -21,5 +21,10 @@ public class ActorEntityManager extends EntityManager<Actor> {
 
     private ActorEntityManager(ActorFactory factory, ActorControl control) {
         super(factory, control);
+    }
+
+    @Override
+    public final void onWorldAffected() {
+
     }
 }

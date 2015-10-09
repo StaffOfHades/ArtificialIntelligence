@@ -1,4 +1,4 @@
-package ia.characteristics;
+package ia.actor.common.actor;
 
 /**
  * Created by mauriciog on 8/19/15.

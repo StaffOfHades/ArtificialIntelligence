@@ -1,8 +1,11 @@
 package ia.actor.common.state;
 
 import ia.actor.common.actor.Actor;
+import ia.actor.common.actor.Attributes;
 import ia.state.State;
 import system.debugging.Log;
+
+import java.util.Random;
 
 /**
  * Default Template. Information about thus class should go here
@@ -11,39 +14,43 @@ import system.debugging.Log;
 public class BodyFunctions extends State<Actor> {
 
     private static final String TAG = "Body Functions";
-    private static final int HUNGRY = 6;
-    private static final int STARVING = 8;
-    private static final int DEAD = 10;
 
-    public BodyFunctions() {
+    public static State<Actor> newInstance() {
+        return new BodyFunctions();
+    }
+
+    private BodyFunctions() {
         super(TAG);
     }
 
     @Override
-    public void onEnter(Actor entity) {
+    public final void onEnter(Actor entity) {
         Log.v(TAG, entity.toString() + " is now alive");
     }
 
     @Override
     public void onExecute(Actor entity) {
         Log.v(TAG, entity.toString() + " has been alive for another turn");
-        entity.getStats().hunger++;
+        final Attributes attributes = entity.getAttributes();
 
-        Log.v(TAG, entity.toString() + "'s hunger has gone up to " + entity.getStats().hunger);
+        attributes.hunger += new Random().nextInt(2) + 1;
 
-        if (entity.getStats().hunger >= DEAD) {
-            Log.v(TAG, entity.toString() + " should be dead due to hunger");
-        } else if (entity.getStats().hunger >= STARVING) {
-            Log.v(TAG, entity.toString() + " is in dire need of food");
+        Log.i(TAG, entity.toString() + "'s hunger has gone up to " + attributes.hunger);
+
+        if ( attributes.hunger >= attributes.getHungerLimit() ) {
+            Log.f(TAG, entity.toString() + " is dying due to hunger");
+            entity.getStats().adjustHealth(-1);
+        } else if (attributes.hunger >= attributes.starvingBorder) {
+            Log.w(TAG, entity.toString() + " is in dire need of food");
             entity.forceLockedState(false);
-            entity.onChangeState( new Eat() );
-        } else if (entity.getStats().hunger >= HUNGRY) {
-            entity.onChangeState(new Eat());
+            entity.onChangeState( Eat.newInstance() );
+        } else if (attributes.hunger >= attributes.hungryBorder) {
+            entity.onChangeState( Eat.newInstance() );
         }
     }
 
     @Override
-    public void onExit(Actor entity) {
+    public final void onExit(Actor entity) {
         Log.v(TAG, entity.toString() + " is now dead");
     }
 }

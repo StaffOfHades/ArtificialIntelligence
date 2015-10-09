@@ -27,7 +27,7 @@ public abstract class EntityManager<E extends GameEntity> implements EntityListe
         sWorldStatus = WorldStatus.getInstance();
     }
 
-    public void runGameTurn() {
+    public final void runGameTurn() {
         for (int i = 0; i < 6; i++) {
             sWorldStatus.getVectorList().clear();
             sWorldStatus.getVectorList().add( new Vector2D(true) );
@@ -38,20 +38,20 @@ public abstract class EntityManager<E extends GameEntity> implements EntityListe
         mControl.runCycle();
     }
 
-    public void addEntity() {
+    public final void addEntity() {
         addEntity(1);
     }
 
-    public void addEntity(int num) {
+    public final void addEntity(int num) {
         for (int i = 0; i < num; i++) {
             Log.i(TAG, "Creating an entity");
             mListeners.add( mFactory.createEntity(this) );
         }
     }
 
-
     @Override
-    public void onWorldAffected() {
-
+    public final void onDeleteChain(ManagerListener<E> object) {
+        Log.d(TAG, "Entity is no more");
+        mListeners.remove(object);
     }
 }

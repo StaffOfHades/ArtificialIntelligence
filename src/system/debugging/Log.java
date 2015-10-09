@@ -33,11 +33,23 @@ public class Log {
             ERROR_ON = true,
             FATAL_ON = true;
 
+    /**
+     * Internal helper method for printing in a standardized format
+     * @param level Debug level to be printed as
+     * @param color Ansi color for text
+     * @param sender Class that sent message to debugger
+     * @param msg Message to print
+     */
     private static void printLog(String level, String color, String sender, String msg) {
         String time = " " + System.currentTimeMillis();
         System.out.println(color + level + "/" + sender + " : " + msg + ANSI_RESET);
     }
 
+    /**
+     * Most basic level message, verbose, printed in black
+     * @param sender Class that sent message
+     * @param msg Message to print
+     */
     public static void v(String sender, String msg) {
         if (VERBOSE_ON)
             printLog("V", ANSI_BLACK, sender, msg);
@@ -48,6 +60,11 @@ public class Log {
             printLog("V", color, sender, msg);
     }
 
+    /**
+     * Debug level of message, printed in purple
+     * @param sender Class that sent message
+     * @param msg Message to print
+     */
     public static void d(String sender, String msg) {
         if (DEBUG_ON)
             printLog("D", ANSI_PURPLE, sender, msg);
@@ -58,6 +75,11 @@ public class Log {
             printLog("D", color, sender, msg);
     }
 
+    /**
+     * Message used to inform of important events, printed in green
+     * @param sender Class that sent message
+     * @param msg Message to print
+     */
     public static void i(String sender, String msg) {
         if (INFO_ON)
             printLog("I", ANSI_GREEN, sender, msg);
@@ -68,6 +90,11 @@ public class Log {
             printLog("I", color, sender, msg);
     }
 
+    /**
+     * Warning message for an unexpected, or potential mistake, printed in yellow
+     * @param sender Class that sent message
+     * @param msg Message to print
+     */
     public static void w(String sender, String msg) {
         if (WARNING_ON)
             printLog("W", ANSI_YELLOW, sender, msg);
@@ -78,6 +105,11 @@ public class Log {
             printLog("W", color, sender, msg);
     }
 
+    /**
+     * Error message for issues encountered during runtime, printed in red
+     * @param sender Class that sent message
+     * @param msg Message to print
+     */
     public static void e(String sender, String msg) {
         if (ERROR_ON)
             printLog("E", ANSI_RED, sender, msg);
@@ -88,6 +120,11 @@ public class Log {
             printLog("E", color, sender, msg);
     }
 
+    /**
+     * Fatal error of the highest priority, printed int blue
+     * @param sender Class that sent message
+     * @param msg Message to print
+     */
     public static void f(String sender, String msg) {
         if (FATAL_ON)
             printLog("F", ANSI_BLUE, sender, msg);
@@ -98,6 +135,9 @@ public class Log {
             printLog("F", color, sender, msg);
     }
 
+    /**
+     * Toggles on all log levels
+     */
     public static void setAllOn() {
         VERBOSE_ON = true;
         DEBUG_ON = true;
@@ -107,6 +147,9 @@ public class Log {
         FATAL_ON = true;
     }
 
+    /**
+     * Toggles off all log levels
+     */
     public static void setAllOff() {
         VERBOSE_ON = false;
         DEBUG_ON = false;
@@ -116,11 +159,20 @@ public class Log {
         FATAL_ON = false;
     }
 
+    /**
+     * Toggles of all log levels, except for one in particular, that remains on
+     * @param level Log flag
+     */
     public static void setOnly(int level) {
         setAllOff();
         setOn(level);
     }
 
+
+    /**
+     * Only toggles on a set log flag
+     * @param level Log flag
+     */
     public static void setOn(int level) {
         boolean set = true;
         switch (level) {
@@ -145,6 +197,10 @@ public class Log {
         }
     }
 
+    /**
+     * Only toggles off a set log flag
+     * @param level Log flag
+     */
     public static void setOff(int level) {
         boolean set = false;
         switch (level) {

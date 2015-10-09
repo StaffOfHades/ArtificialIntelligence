@@ -1,4 +1,4 @@
-package ia.type;
+package ia.world_interaction;
 
 /**
  * Default Template. Information about thus class should go here
@@ -8,7 +8,8 @@ public class PathFinding {
 
     public final static int PAUSED = 0,
                             ACTIVE = 1;
-    private String mWorldState;
+
+    private int mState = PAUSED;
 
     protected static PathFinding getInstance() {
         return new PathFinding();
@@ -16,10 +17,6 @@ public class PathFinding {
 
     private PathFinding() {
 
-    }
-
-    protected void setWorldState(String worldState) {
-        mWorldState = worldState;
     }
 
     protected boolean findPath(long x, long y) {
@@ -35,6 +32,6 @@ public class PathFinding {
     }
 
     protected int getState() {
-        return 0;
+        return mState;
     }
 }

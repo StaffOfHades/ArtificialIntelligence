@@ -1,6 +1,5 @@
 package ia.actor.common.actor;
 
-import ia.characteristics.Attributes;
 import ia.state.State;
 import ia.world_interaction.PercipientListener;
 
@@ -14,9 +13,8 @@ public interface ActorListener extends PercipientListener<Actor> {
     Personality getPersonality();
     Inventory getInventory();
 
-
     void onRevertState();
     void onRevertStateBy(int times);
     void onChangeState(State<Actor> state);
-    boolean onCompareState(State<Actor> state);
+    boolean onCompareState(Class<? extends State<Actor>> state);
 }

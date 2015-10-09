@@ -26,7 +26,7 @@ public abstract class GameEntity {
         this.name = name;
         id = UUID.randomUUID();
 
-        mStats = Stats.newInstance();
+        mStats = initStats();
 
         Log.d(TAG, "Creating " + toString());
     }
@@ -37,7 +37,7 @@ public abstract class GameEntity {
         this.name = name;
         id = UUID.randomUUID();
 
-        mStats = Stats.newInstance();
+        mStats = initStats();
 
         Log.d(TAG, "Creating " + toString());
     }
@@ -48,13 +48,13 @@ public abstract class GameEntity {
         num++;
 
         mVector2D = new Vector2D(true);
-        mStats = Stats.newInstance();
+        mStats = initStats();
 
         Log.d(TAG, "Creating " + toString() );
     }
 
     @Override
-    public boolean equals(Object object) {
+    public final boolean equals(Object object) {
         if (object == null) return false;
         if (object instanceof GameEntity) {
             return id.equals( ( (GameEntity) object ).id );
@@ -63,10 +63,11 @@ public abstract class GameEntity {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return name;
     }
 
     public abstract void update();
-
+    public abstract void delete();
+    protected abstract Stats initStats();
 }

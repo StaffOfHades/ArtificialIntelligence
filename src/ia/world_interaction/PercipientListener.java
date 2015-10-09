@@ -8,7 +8,9 @@ import ia.message.Perception;
 /**
  * Created by mauriciog on 8/19/15.
  */
-public interface PercipientListener<E extends GameEntity> {
+public interface PercipientListener<E extends GameEntity> extends DeleteListener< SimpleManagerListener<E> > {
+
+    void setSimpleManagerListener(SimpleManagerListener<E> listener);
     void onPerceptionChanged(Perception perception);
     Stats getStats();
     Vector2D getVector2D();

@@ -13,14 +13,14 @@ import java.util.List;
  */
 public class Percipient<E extends GameEntity> implements ManagerListener<E> {
 
-    private final PercipientListener<E> mListener;
+    private PercipientListener<E> mListener;
 
     public Percipient(PercipientListener<E> listener) {
         mListener = listener;
     }
 
     @Override
-    public void onWorldUpdated(WorldSnapshot snapshot) {
+    public final void onWorldUpdated(WorldSnapshot snapshot) {
         final Vector2D v1 = mListener.getVector2D();
         final List<Vector2D> vectors = snapshot.vectorList;
         final List<Vector2D> visibleVectors = new ArrayList<Vector2D>();
@@ -29,5 +29,11 @@ public class Percipient<E extends GameEntity> implements ManagerListener<E> {
                 visibleVectors.add(v2);
         }
         mListener.onPerceptionChanged( new Perception(visibleVectors) );
+    }
+
+    @Override
+    public final void onCascadeDelete() {
+        mListener.onDeleteChain( (SimpleManagerListener) this);
+        mListener = null;
     }
 }

@@ -2,9 +2,13 @@ package ia.state;
 
 import ia.base.GameEntity;
 
+
 /**
- * Default Template. Information about thus class should go here
- * Created by mauriciog on 10/1/15 for Artificial Intelligence
+ * State class for use with direct access to a Game Entity. Used namely for global variables,
+ * or states that handle advance behavior. Careful use is needed, since they have access
+ * to particularly dangerous commands such as delete, or update;
+ *
+ * @param <E> GameEntity child over which this state will interact
  */
 public abstract class State<E extends GameEntity> {
 
@@ -19,7 +23,7 @@ public abstract class State<E extends GameEntity> {
     public abstract void onExit(E entity);
 
     @Override
-    public String toString() {
+    public final String toString() {
         return mName;
     }
 

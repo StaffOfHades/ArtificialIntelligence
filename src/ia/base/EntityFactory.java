@@ -11,6 +11,7 @@ public abstract class EntityFactory<E extends GameEntity> {
         final EffectorListener<E> effectorListener = new Effector<E>(listener);
         final PercipientListener<E> percipientListener = createPercipientListener(effectorListener);
         final ManagerListener<E> managerListener = new Percipient<E>(percipientListener);
+        percipientListener.setSimpleManagerListener(managerListener);
         return managerListener;
     }
 

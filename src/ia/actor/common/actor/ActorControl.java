@@ -12,29 +12,29 @@ public class ActorControl extends EntityControl<Actor> {
 
     private static ActorControl sActorControl;
 
-    public static ActorControl getInstance() {
+    public final static ActorControl getInstance() {
         if (sActorControl == null)
             sActorControl = new ActorControl();
         return sActorControl;
     }
 
     @Override
-    protected void registerEntity(Actor actor) {
+    protected final void registerEntity(Actor actor) {
         super.registerEntity(actor);
     }
 
     @Override
-    protected Actor getEntityById(UUID id) {
+    protected final Actor getEntityById(UUID id) {
         return super.getEntityById(id);
     }
 
     @Override
-    protected boolean removeEntity(UUID id) {
+    protected final boolean removeEntity(UUID id) {
         return super.removeEntity(id);
     }
 
     @Override
-    protected boolean removeEntity(Actor actor) {
+    protected final boolean removeEntity(Actor actor) {
         return removeEntity(actor.id);
     }
 

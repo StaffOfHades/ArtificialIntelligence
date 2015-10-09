@@ -13,7 +13,7 @@ import java.util.List;
 public class StateManager<E extends GameEntity> {
 
     private static final String TAG = "State Manager";
-    private final E mOwner;
+    private E mOwner;
     private State<E> mCurrentState;
     private State<E> mGlobalState;
     private final List< State<E> > mPreviousList;
@@ -25,41 +25,41 @@ public class StateManager<E extends GameEntity> {
         mPreviousList = new ArrayList< State<E> >();
     }
 
-    public void setGlobalState(State<E> globalState) {
+    public final void setGlobalState(State<E> globalState) {
         mGlobalState = globalState;
         Log.i(TAG,
-                "Setting global state \"" + globalState.toString() + "\" for " + mOwner.toString());
+                mOwner.toString() + " now has global state \"" + globalState.toString() + "\"");
         mGlobalState.onEnter(mOwner);
     }
 
-    public void update() {
-        Log.i(TAG, "Updating " + mOwner.toString());
+    public final void update() {
+        Log.i(TAG, mOwner.toString() + " updated to current turn");
         if (mGlobalState != null)
             mGlobalState.onExecute(mOwner);
         if (mCurrentState != null)
             mCurrentState.onExecute(mOwner);
     }
 
-    public void changeState(State<E> newState) {
+    public final void changeState(State<E> newState) {
         mPreviousList.add(mCurrentState);
         Log.i(TAG,
-                "Changing to state " + ( mPreviousList.size() - 1 ) + ", \"" + newState.toString() + "\" of " + mOwner.toString());
+                mOwner + " changed to state " + ( mPreviousList.size() - 1 ) + ", \"" + newState.toString() + "\"");
         if (mCurrentState != null)
             mCurrentState.onExit(mOwner);
         mCurrentState = newState;
         mCurrentState.onEnter(mOwner);
     }
 
-    public void revertToPreviousState() {
+    public final void revertToPreviousState() {
         revertToPreviousStateBy(1);
     }
 
-    public void revertToPreviousStateBy(int times) {
+    public final void revertToPreviousStateBy(int times) {
         if (mPreviousList.size() - times >= 0) {
             State<E> previousState = mPreviousList.get( mPreviousList.size() - times );
             int previousNum = (mPreviousList.size() - times) - (mCurrentState != null ? 1 : 0);
             Log.i(TAG,
-                    "Reverting to state " +  previousNum + ", \"" + previousState.toString() + "\" of " + mOwner.toString());
+                    mOwner.toString() + " reverted to state " +  previousNum + ", \"" + previousState.toString() + "\"");
             mCurrentState.onExit(mOwner);
             mCurrentState = previousState;
             for (int i = 1; i <= times; i++) {
@@ -69,7 +69,15 @@ public class StateManager<E extends GameEntity> {
         }
     }
 
-    public boolean isInState(State state) {
-        return mCurrentState.equals(state);
+    public final boolean isInState(Class<? extends State<E>> stateClass) {
+        return mCurrentState.getClass().equals(stateClass);
+    }
+
+    public final void delete() {
+        mPreviousList.clear();
+        mCurrentState = null;
+        mGlobalState.onExit(mOwner);
+        mOwner = null;
+        mGlobalState = null;
     }
 }

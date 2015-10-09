@@ -7,14 +7,20 @@ import ia.base.GameEntity;
  */
 public class Effector<E extends GameEntity> implements EffectorListener<E> {
 
-    private final EntityListener<E> mListener;
+    private EntityListener<E> mListener;
 
     public Effector(EntityListener<E> listener) {
         mListener = listener;
     }
 
     @Override
-    public void onEntityDecision() {
+    public final void onEntityDecision() {
         mListener.onWorldAffected();
+    }
+
+    @Override
+    public final void onDeleteChain(SimpleManagerListener<E> object) {
+        mListener.onDeleteChain( (ManagerListener<E>) object);
+        mListener = null;
     }
 }

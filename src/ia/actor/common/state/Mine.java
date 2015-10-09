@@ -14,24 +14,28 @@ public class Mine extends ActorState<Actor> {
 
     private static final String TAG = "Mine";
 
-    public Mine() {
+    public static ActorState<Actor> newInstance() {
+        return new Mine();
+    }
+
+    private Mine() {
         super(TAG);
     }
 
     @Override
-    public void enter(ActorListener listener) {
+    public final void enter(ActorListener listener) {
         Log.v(TAG, listener.toString() + " is starting to mine");
     }
 
     @Override
-    public void execute(ActorListener listener) {
+    public final void execute(ActorListener listener) {
         int resources = new Random().nextInt(3) + 1;
         listener.getInventory().resource += resources;
-        Log.v(TAG, listener.toString() + " mined " +  resources + " resource, now has " + listener.getInventory().resource + " pieces");
+        Log.i(TAG, listener.toString() + " mined " +  resources + " resource, now has " + listener.getInventory().resource + " pieces");
     }
 
     @Override
-    public void exit(ActorListener listener) {
+    public final void exit(ActorListener listener) {
         Log.v(TAG, listener.toString() + " is no longer mining");
     }
 }

@@ -1,14 +1,17 @@
 package ia.actor.common.state;
 
+import ia.actor.common.actor.Actor;
 import ia.actor.common.actor.ActorListener;
-import ia.base.GameEntity;
 import ia.state.State;
 
 /**
- * Default Template. Information about thus class should go here
- * Created by mauriciog on 10/1/15 for Artificial Intelligence
+ * Actor State class for use with limited access to an actor listener. Used namely for any normal state
+ * for an Actor or states that handle advance behavior. By limiting access, this class is particularly
+ * safe.
+ *
+ * @param <E> An implementation of Actor
  */
-public abstract class ActorState<E extends GameEntity & ActorListener> extends State<E> {
+public abstract class ActorState<E extends Actor> extends State<E> {
 
 
     public ActorState(String name) {
@@ -16,17 +19,17 @@ public abstract class ActorState<E extends GameEntity & ActorListener> extends S
     }
 
     @Override
-    public void onEnter(E e) {
+    public final void onEnter(E e) {
         enter(e);
     }
 
     @Override
-    public void onExecute(E e) {
+    public final void onExecute(E e) {
         execute(e);
     }
 
     @Override
-    public void onExit(E e) {
+    public final void onExit(E e) {
         exit(e);
     }
 

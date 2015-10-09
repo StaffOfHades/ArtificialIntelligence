@@ -37,19 +37,19 @@ public class Trait {
         Log.d(TAG, (hasTrait ? "Has" : "Doesn't have") + " trait \"" + mType +  "\" with value " + mValue);
     }
 
-    public int getValue() {
+    public final int getValue() {
         return mValue;
     }
 
-    public boolean hasTrait() {
+    public final boolean hasTrait() {
         return hasTrait;
     }
 
-    public TraitType getType() {
+    public final TraitType getType() {
         return mType;
     }
 
-    public boolean change(boolean eventSuccessful, Trait adaptable) {
+    public final boolean change(boolean eventSuccessful, Trait adaptable) {
         if (adaptable.mType != TraitType.Adaptable) {
             new Exception(adaptable.toString() + " must be " + TraitType.Adaptable);
             return false;

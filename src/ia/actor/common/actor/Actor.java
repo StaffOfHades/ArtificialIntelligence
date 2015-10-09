@@ -4,13 +4,13 @@ import ia.actor.common.state.BodyFunctions;
 import ia.actor.common.state.Plan;
 import ia.actor.common.type.PersonalityType;
 import ia.base.GameEntity;
-import ia.characteristics.Attributes;
 import ia.characteristics.Stats;
 import ia.characteristics.Vector2D;
 import ia.message.Perception;
 import ia.state.State;
 import ia.state.StateManager;
 import ia.world_interaction.EffectorListener;
+import ia.world_interaction.SimpleManagerListener;
 import system.debugging.Log;
 
 import java.util.Random;
@@ -22,33 +22,25 @@ import java.util.Random;
 public class Actor extends GameEntity implements ActorListener {
 
     private static final String TAG = "Actor";
-    private final StateManager<Actor> mStateManager;
 
-    private final EffectorListener<Actor> mEffector;
-
-    private final Attributes mAttributes;
-    private final Inventory mInventory;
+    private final Attributes mAttributes = Attributes.newInstance();;
+    private final Inventory mInventory = Inventory.newInstance();
     private final Personality mPersonality;
+    private StateManager<Actor> mStateManager;
 
+    private EffectorListener<Actor> mEffector;
     private boolean inLockedState;
+    private SimpleManagerListener<Actor> mManagerListener;
 
     public static Actor newInstance(EffectorListener<Actor> listener) {
-        final Random random = new Random();
-        final int probability = random.nextInt(10);
-        final PersonalityType type;
-        if (probability >= 0 && probability < 5) {
-            type = PersonalityType.Adaptable;
-        } else if (probability < 8) {
-            type = PersonalityType.Unyielding;
-        } else if (probability < 9) {
-            type = PersonalityType.Chaotic;
-        } else {
-            type = PersonalityType.Static;
-        }
-        return new Actor(type, listener);
+        return new Actor(nextPersonality(), listener);
     }
 
     public static Actor newInstance(Vector2D v2, EffectorListener<Actor> listener) {
+        return new Actor(nextPersonality(), v2, listener);
+    }
+
+    private static PersonalityType nextPersonality() {
         final Random random = new Random();
         final int probability = random.nextInt(10);
         final PersonalityType type;
@@ -61,51 +53,45 @@ public class Actor extends GameEntity implements ActorListener {
         } else {
             type = PersonalityType.Static;
         }
-        return new Actor(type, v2, listener);
+        return type;
     }
 
     private Actor(PersonalityType type, EffectorListener<Actor> effector) {
         super("Actor " + num);
+        num++;
+        ActorControl.getInstance().registerEntity(this);
 
         mEffector = effector;
 
-        mInventory = Inventory.newInstance();
         mPersonality = Personality.newInstance(type);
-        mAttributes = Attributes.newInstance();
+
+        mAttributes.changeStrength(0, mPersonality);
+        mStats.setMaxHealth(mAttributes.getStrength() * 2);
 
         mStateManager = new StateManager<Actor>(this);
-        mStateManager.setGlobalState(new BodyFunctions());
-        mStateManager.changeState(new Plan());
-
-        inLockedState = true;
-
-        num++;
-
-        ActorControl.getInstance().registerEntity(this);
+        mStateManager.setGlobalState( BodyFunctions.newInstance() );
+        mStateManager.changeState( Plan.newInstance() );
     }
 
     private Actor(PersonalityType type, Vector2D v2D, EffectorListener<Actor> effector) {
         super("Actor " + num, v2D);
+        num++;
+        ActorControl.getInstance().registerEntity(this);
 
         mEffector = effector;
 
-        mInventory = Inventory.newInstance();
         mPersonality = Personality.newInstance(type);
-        mAttributes = Attributes.newInstance();
+
+        mAttributes.changeStrength(0, mPersonality);
+        mStats.setMaxHealth(mAttributes.getStrength() * 2);
 
         mStateManager = new StateManager<Actor>(this);
-        mStateManager.setGlobalState(new BodyFunctions());
-        mStateManager.changeState(new Plan());
-
-        inLockedState = true;
-
-        num++;
-
-        ActorControl.getInstance().registerEntity(this);
+        mStateManager.setGlobalState( BodyFunctions.newInstance() );
+        mStateManager.changeState( Plan.newInstance() );
     }
 
     public void forceLockedState(boolean inLockedState) {
-        Log.w(TAG, toString() + " was forced out of a locked state");
+        Log.w(TAG, toString() + " was forced " + (inLockedState ? "into" : "out of") + "  a locked state");
         this.inLockedState = inLockedState;
     }
 
@@ -115,10 +101,29 @@ public class Actor extends GameEntity implements ActorListener {
     }
 
     @Override
+    public void delete() {
+        mStateManager.delete();
+        mStateManager = null;
+        ActorControl.getInstance().removeEntity(this);
+        mManagerListener.onCascadeDelete();
+        mManagerListener = null;
+    }
+
+    @Override
+    protected Stats initStats() {
+        return Stats.newInstance(this);
+    }
+
+    @Override
+    public void setSimpleManagerListener(SimpleManagerListener<Actor> listener) {
+        mManagerListener = listener;
+    }
+
+    @Override
     public void onPerceptionChanged(Perception perception) {
         Log.d( TAG, "Size of vector list found by perception is " + perception.vectorList.size() );
         for (Vector2D v2 : perception.vectorList) {
-            Log.v(TAG, "Found vector " + v2.toString());
+            Log.v(TAG, toString() + " found vector " + v2.toString());
         }
 
         mEffector.onEntityDecision();
@@ -137,7 +142,7 @@ public class Actor extends GameEntity implements ActorListener {
     @Override
     public void onRevertState() {
         if (inLockedState) {
-            Log.i(TAG, "Unable to revert to previous state; in locked state");
+            Log.i(TAG, toString()  + " unable to revert to previous state; in locked state");
         } else {
             mStateManager.revertToPreviousState();
         }
@@ -146,15 +151,15 @@ public class Actor extends GameEntity implements ActorListener {
     @Override
     public void onRevertStateBy(int times) {
         if (inLockedState) {
-            Log.i(TAG, "Unable to revert to previous state; in locked state");
+            Log.i(TAG, toString() + " unable to revert to previous state; in locked state");
         } else {
             mStateManager.revertToPreviousStateBy(times);
         }
     }
 
     @Override
-    public boolean onCompareState(State<Actor> state) {
-        return mStateManager.isInState(state);
+    public boolean onCompareState(Class<? extends State<Actor>> stateCLass) {
+        return mStateManager.isInState(stateCLass);
     }
 
     @Override
@@ -180,5 +185,11 @@ public class Actor extends GameEntity implements ActorListener {
     @Override
     public Vector2D getVector2D() {
         return mVector2D;
+    }
+
+    @Override
+    public void onDeleteChain(SimpleManagerListener<Actor> object) {
+        mEffector.onDeleteChain(object);
+        mEffector = null;
     }
 }

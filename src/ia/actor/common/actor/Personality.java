@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class Personality {
 
-    private static final String TAG = "Personality";
+    private static final String TAG = "Stats";
     private final PersonalityType mType;
     private final Map<TraitType, Trait> mTraitMap;
     private final ChangeVelocityHolder mHolder;
@@ -58,8 +58,16 @@ public class Personality {
         }
     }
 
-    public boolean updateTrait(TraitType type, boolean eventSuccessful) {
+    public final boolean updateTrait(TraitType type, boolean eventSuccessful) {
         return mTraitMap.get(type).change( eventSuccessful, mTraitMap.get(TraitType.Adaptable) );
+    }
+
+    public final int getTraitValue(TraitType type) {
+        return mTraitMap.get(type).getValue();
+    }
+
+    public final boolean hasTrait(TraitType type) {
+        return mTraitMap.get(type).hasTrait();
     }
 
     class ChangeVelocityHolder {

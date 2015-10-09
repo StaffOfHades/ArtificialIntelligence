@@ -12,23 +12,27 @@ public class Digest extends ActorState<Actor> {
 
     private static final String TAG = "Digest";
 
-    public Digest() {
+    public static ActorState<Actor> newInstance() {
+        return new Digest();
+    }
+
+    private Digest() {
         super(TAG);
     }
 
     @Override
-    public void enter(ActorListener listener) {
+    public final void enter(ActorListener listener) {
         Log.v(TAG, listener.toString() + " will start to digest");
     }
 
     @Override
-    public void execute(ActorListener listener) {
-        Log.v(TAG, listener.toString() + " is digesting");
+    public final void execute(ActorListener listener) {
+        Log.i(TAG, listener.toString() + " is digesting");
         listener.onRevertStateBy(2);
     }
 
     @Override
-    public void exit(ActorListener listener) {
+    public final void exit(ActorListener listener) {
         Log.v(TAG, listener.toString() + " has finished digesting");
     }
 }
