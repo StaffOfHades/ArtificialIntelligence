@@ -8,11 +8,11 @@ import ia.world_interaction.*;
 public abstract class EntityFactory<E extends GameEntity> {
 
     public ManagerListener<E> createEntity(EntityManager<E> listener) {
-        final EffectorListener<E> effectorListener = new Effector<E>(listener);
+        final EffectorListener<E> effectorListener = new Effector<>(listener);
         final PercipientListener<E> percipientListener = createPercipientListener(effectorListener);
-        final ManagerListener<E> managerListener = new Percipient<E>(percipientListener);
-        percipientListener.setSimpleManagerListener(managerListener);
-        return managerListener;
+        final Percipient<E> percipient = new Percipient<>(percipientListener);
+        percipientListener.setCascadeDeleteListener(percipient);
+        return percipient;
     }
 
     protected abstract PercipientListener<E> createPercipientListener(

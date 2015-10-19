@@ -7,7 +7,9 @@ import ia.characteristics.Vector2D;
 import system.debugging.Log;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mauriciog on 8/21/15.
@@ -23,7 +25,7 @@ public abstract class EntityManager<E extends GameEntity> implements EntityListe
     public EntityManager(EntityFactory<E> factory, EntityControl<E> control) {
         mFactory = factory;
         mControl = control;
-        mListeners = new ArrayList< ManagerListener<E> >();
+        mListeners = new ArrayList<>();
         sWorldStatus = WorldStatus.getInstance();
     }
 
@@ -33,7 +35,7 @@ public abstract class EntityManager<E extends GameEntity> implements EntityListe
             sWorldStatus.getVectorList().add( new Vector2D(true) );
         }
         for (ManagerListener<E> listener : mListeners) {
-            listener.onWorldUpdated(sWorldStatus.getSnapshot());
+            listener.onWorldUpdated( sWorldStatus.getSnapshot() );
         }
         mControl.runCycle();
     }
@@ -49,9 +51,34 @@ public abstract class EntityManager<E extends GameEntity> implements EntityListe
         }
     }
 
+    public final void publishEntityInfo() {
+        Map<String, Map<String, String>> mInfoMap = mControl.getEntityInfo();
+        java.util.Iterator<Map.Entry<String, Map<String, String>>> iterator = mInfoMap.entrySet().iterator();
+        Log.i(TAG, "Final Results ", Log.ANSI_BLUE);
+
+        Map.Entry<String, Map<String, String>> entry;
+        Map<String, String> m;
+        Map.Entry<String, String> e;
+        Iterator<Map.Entry<String, String>> i;
+        while ( iterator.hasNext()) {
+            entry = iterator.next();
+            Log.d(TAG, entry.getKey() + ":");
+            m = entry.getValue();
+            i = m.entrySet().iterator();
+            while (i.hasNext()) {
+                e = i.next();
+                Log.v(TAG, e.getKey() + ": " + e.getValue());
+            }
+        }
+    }
+
     @Override
-    public final void onDeleteChain(ManagerListener<E> object) {
-        Log.d(TAG, "Entity is no more");
-        mListeners.remove(object);
+    public final void onDeleteChain(CascadeDeleteListener<E> object) {
+        try {
+            mListeners.remove(object);
+            Log.d(TAG, "Entity is no more");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

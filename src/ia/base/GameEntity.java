@@ -4,6 +4,7 @@ import ia.characteristics.Stats;
 import ia.characteristics.Vector2D;
 import system.debugging.Log;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -70,4 +71,5 @@ public abstract class GameEntity {
     public abstract void update();
     public abstract void delete();
     protected abstract Stats initStats();
+    public abstract Map<String,String> getEntityInfo();
 }

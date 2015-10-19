@@ -12,15 +12,17 @@ import system.debugging.Log;
 public class ConsoleView {
 
     private static final String TAG = "Game View";
-    private static final int GAME_TURNS = 10;
-    private static final int NUM_ACTORS = 10;
+    private static final int GAME_TURNS = 25;
+    private static final int NUM_ACTORS = 3;
 
     public static void main(String[] args) {
-        ActorEntityManager manager = ActorEntityManager.getInstance(ActorFactory.getInstance(), ActorControl.getInstance());;
+        ActorEntityManager manager =
+                ActorEntityManager.getInstance( ActorFactory.getInstance(), ActorControl.getInstance() );
         manager.addEntity(NUM_ACTORS);
         for (int i = 0; i < GAME_TURNS; i++) {
             Log.i(TAG, "Staring game turn " + (i + 1), Log.ANSI_BLUE);
             manager.runGameTurn();
         }
+        manager.publishEntityInfo();
     }
 }

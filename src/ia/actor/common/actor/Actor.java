@@ -9,10 +9,12 @@ import ia.characteristics.Vector2D;
 import ia.message.Perception;
 import ia.state.State;
 import ia.state.StateManager;
+import ia.world_interaction.CascadeDeleteListener;
 import ia.world_interaction.EffectorListener;
-import ia.world_interaction.SimpleManagerListener;
 import system.debugging.Log;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -26,11 +28,12 @@ public class Actor extends GameEntity implements ActorListener {
     private final Attributes mAttributes = Attributes.newInstance();;
     private final Inventory mInventory = Inventory.newInstance();
     private final Personality mPersonality;
-    private StateManager<Actor> mStateManager;
 
+    private StateManager<Actor> mStateManager;
     private EffectorListener<Actor> mEffector;
+    private CascadeDeleteListener<Actor> mDeleteListener;
+
     private boolean inLockedState;
-    private SimpleManagerListener<Actor> mManagerListener;
 
     public static Actor newInstance(EffectorListener<Actor> listener) {
         return new Actor(nextPersonality(), listener);
@@ -68,7 +71,7 @@ public class Actor extends GameEntity implements ActorListener {
         mAttributes.changeStrength(0, mPersonality);
         mStats.setMaxHealth(mAttributes.getStrength() * 2);
 
-        mStateManager = new StateManager<Actor>(this);
+        mStateManager = new StateManager<>(this);
         mStateManager.setGlobalState( BodyFunctions.newInstance() );
         mStateManager.changeState( Plan.newInstance() );
     }
@@ -85,7 +88,7 @@ public class Actor extends GameEntity implements ActorListener {
         mAttributes.changeStrength(0, mPersonality);
         mStats.setMaxHealth(mAttributes.getStrength() * 2);
 
-        mStateManager = new StateManager<Actor>(this);
+        mStateManager = new StateManager<>(this);
         mStateManager.setGlobalState( BodyFunctions.newInstance() );
         mStateManager.changeState( Plan.newInstance() );
     }
@@ -105,8 +108,9 @@ public class Actor extends GameEntity implements ActorListener {
         mStateManager.delete();
         mStateManager = null;
         ActorControl.getInstance().removeEntity(this);
-        mManagerListener.onCascadeDelete();
-        mManagerListener = null;
+        mStats.delete();
+        mDeleteListener.onCascadeDelete();
+        mDeleteListener = null;
     }
 
     @Override
@@ -115,8 +119,18 @@ public class Actor extends GameEntity implements ActorListener {
     }
 
     @Override
-    public void setSimpleManagerListener(SimpleManagerListener<Actor> listener) {
-        mManagerListener = listener;
+    public Map<String, String> getEntityInfo() {
+        final Map<String, String> map = new HashMap<>();
+        /*map.put("health", Integer.toString(mStats.getCurrentHealth()));
+        map.put("hunger", Integer.toString(mAttributes.hunger));*/
+        map.put("gold", Integer.toString(mInventory.resource));
+        map.put("strenth", Integer.toString(mAttributes.getStrength()));
+        return map;
+    }
+
+    @Override
+    public void setCascadeDeleteListener(CascadeDeleteListener<Actor> listener) {
+        mDeleteListener = listener;
     }
 
     @Override
@@ -188,7 +202,7 @@ public class Actor extends GameEntity implements ActorListener {
     }
 
     @Override
-    public void onDeleteChain(SimpleManagerListener<Actor> object) {
+    public void onDeleteChain(CascadeDeleteListener<Actor> object) {
         mEffector.onDeleteChain(object);
         mEffector = null;
     }

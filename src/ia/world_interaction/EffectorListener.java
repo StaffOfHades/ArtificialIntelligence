@@ -5,6 +5,6 @@ import ia.base.GameEntity;
 /**
  * Created by mauriciog on 8/19/15.
  */
-public interface EffectorListener<E extends GameEntity> extends DeleteListener<SimpleManagerListener <E> >{
+public interface EffectorListener<E extends GameEntity> extends DeleteListener< CascadeDeleteListener<E> >{
     void onEntityDecision();
 }

@@ -19,8 +19,8 @@ public class Effector<E extends GameEntity> implements EffectorListener<E> {
     }
 
     @Override
-    public final void onDeleteChain(SimpleManagerListener<E> object) {
-        mListener.onDeleteChain( (ManagerListener<E>) object);
+    public final void onDeleteChain(CascadeDeleteListener<E> object) {
+        mListener.onDeleteChain(object);
         mListener = null;
     }
 }

@@ -46,4 +46,8 @@ public class Stats {
             mParent.delete();
         mParent = null;
     }
+
+    public void delete() {
+        mParent = null;
+    }
 }

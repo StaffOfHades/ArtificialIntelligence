@@ -32,6 +32,11 @@ public class Mine extends ActorState<Actor> {
         int resources = new Random().nextInt(3) + 1;
         listener.getInventory().resource += resources;
         Log.i(TAG, listener.toString() + " mined " +  resources + " resource, now has " + listener.getInventory().resource + " pieces");
+
+        if (listener.getInventory().resource >= 5 &&
+                listener.getAttributes().getStrength() < listener.getAttributes().MAX) {
+            listener.onChangeState( Upgrade.newInstance() );
+        }
     }
 
     @Override

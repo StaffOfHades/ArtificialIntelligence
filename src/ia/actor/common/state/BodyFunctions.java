@@ -39,7 +39,7 @@ public class BodyFunctions extends State<Actor> {
 
         if ( attributes.hunger >= attributes.getHungerLimit() ) {
             Log.f(TAG, entity.toString() + " is dying due to hunger");
-            entity.getStats().adjustHealth(-1);
+            entity.getStats().adjustHealth( new Random().nextInt(2) + 1 );
         } else if (attributes.hunger >= attributes.starvingBorder) {
             Log.w(TAG, entity.toString() + " is in dire need of food");
             entity.forceLockedState(false);

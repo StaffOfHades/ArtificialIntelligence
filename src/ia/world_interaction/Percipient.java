@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by mauriciog on 8/19/15.
  */
-public class Percipient<E extends GameEntity> implements ManagerListener<E> {
+public class Percipient<E extends GameEntity> implements ManagerListener<E>, CascadeDeleteListener<E> {
 
     private PercipientListener<E> mListener;
 
@@ -33,7 +33,7 @@ public class Percipient<E extends GameEntity> implements ManagerListener<E> {
 
     @Override
     public final void onCascadeDelete() {
-        mListener.onDeleteChain( (SimpleManagerListener) this);
+        mListener.onDeleteChain(this);
         mListener = null;
     }
 }

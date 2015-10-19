@@ -11,7 +11,7 @@ import java.util.Random;
 public class Attributes {
 
     private final static int INCREASE_LIMIT= 4;
-    private final static int MAX = 10;
+    public final static int MAX = 10;
     private static final String TAG = "Attributes";
 
     public int
@@ -30,10 +30,10 @@ public class Attributes {
         mStrength = ( random.nextInt(2) + 2) * 2 + random.nextInt(3);
     }
 
-    private final void increaseAttribute(int attribute, int amount) {
+    private final int increaseAttribute(int attribute, int amount) {
         if ( (attribute == MAX && amount > 0)
                 || (attribute == 0 && amount < 0) )
-            return;
+            return attribute;
 
         if (Math.abs(amount) > INCREASE_LIMIT)
             amount = INCREASE_LIMIT * ( amount / Math.abs(amount) );
@@ -44,10 +44,11 @@ public class Attributes {
             attribute = MAX;
         else if (attribute < 0)
             attribute = 0;
+        return attribute;
     }
 
     public final void changeStrength(int change, final Personality personality) {
-        increaseAttribute(mStrength, change);
+        mStrength = increaseAttribute(mStrength, change);
         mHungerLimit = (int) (mStrength * 1.6);
 
         final boolean isDiligent = personality.hasTrait(TraitType.Diligent);
@@ -59,7 +60,7 @@ public class Attributes {
             hungryBorder = (int) (mStrength * .9);
         } else if (isDiligent) {
             Log.d(TAG, "Only diligent");
-            hungryBorder = (int) (mStrength * .75);
+            hungryBorder = (int) (mStrength * .8);
         } else {
             Log.d(TAG, "Not diligent");
             hungryBorder = (int) (mStrength * .6);
@@ -70,7 +71,7 @@ public class Attributes {
             starvingBorder = (int) (mStrength * 1.40);
         } else if (isDaring) {
             Log.d(TAG, "Only daring");
-            starvingBorder = (int) (mStrength * 1.20);
+            starvingBorder = (int) (mStrength * 1.25);
         } else {
             Log.d(TAG, "Not daring");
             starvingBorder = (int) (mStrength * 1);

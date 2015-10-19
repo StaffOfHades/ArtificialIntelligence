@@ -2,6 +2,7 @@ package ia.base;
 
 import system.debugging.Log;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,4 +48,11 @@ public class EntityControl<E extends GameEntity> {
     }
 
 
+    public Map<String, Map<String, String>>  getEntityInfo() {
+        final Map<String, Map<String, String>> mapList = new HashMap<>();
+        for (E entity : mEntityMap.values() ) {
+            mapList.put(entity.name, entity.getEntityInfo());
+        }
+        return mapList;
+    }
 }

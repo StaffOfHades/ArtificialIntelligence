@@ -23,7 +23,7 @@ public class WorldStatus {
     }
 
     private WorldStatus() {
-        mVectorList = new ArrayList<Vector2D>();
+        mVectorList = new ArrayList<>();
     }
 
     protected WorldSnapshot getSnapshot() {
